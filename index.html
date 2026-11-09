@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>凡人修仙传 · 双状态纪元</title>
+<meta name="description" content="以《凡人修仙传》为背景的双状态驱动文字修仙游戏。世界自己推演，行为决定遭遇——没有固定事件池，每一局都是一条新的命。">
+<meta name="theme-color" content="#0a0d0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230a0d0a'/%3E%3Ctext x='32' y='45' font-size='36' font-family='serif' fill='%23c9a961' text-anchor='middle'%3E%E5%87%A1%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-mountains" aria-hidden="true">
+  <svg class="m1" viewBox="0 0 1440 420" preserveAspectRatio="none"><path d="M0 336 L104 246 L186 288 L306 158 L402 244 L508 180 L618 292 L742 150 L844 238 L962 118 L1078 216 L1196 156 L1324 246 L1440 190 L1440 420 L0 420 Z"/></svg>
+  <svg class="m2" viewBox="0 0 1440 320" preserveAspectRatio="none"><path d="M0 258 L140 206 L250 250 L390 176 L520 248 L660 196 L800 268 L940 190 L1080 252 L1220 200 L1340 254 L1440 216 L1440 320 L0 320 Z"/></svg>
+  <svg class="m3" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 176 L180 148 L330 182 L500 142 L680 188 L860 150 L1040 186 L1220 152 L1440 180 L1440 220 L0 220 Z"/></svg>
+</div>
+
+<!-- ==================== 标题页 ==================== -->
+<section id="screen-title" class="screen">
+  <div class="title-inner">
+    <span class="title-eyebrow">世界自转 · 行为造命</span>
+    <div class="title-mark">凡</div>
+    <h1 class="title-main">凡人修仙传</h1>
+    <div class="title-sub"><i></i><span>双状态纪元</span><i></i></div>
+    <p class="title-desc">没有写好的事件池。世界每年自己推演，而你的一切行为都会沉进暗处，<br>变成下一次遭逢的缘由。每一局，都是一条新的命。</p>
+
+    <div id="title-start">
+      <div class="diff-row" id="diff-row">
+        <button class="diff-btn" data-diff="0">顺 遂</button>
+        <button class="diff-btn on" data-diff="1">寻 常</button>
+        <button class="diff-btn" data-diff="2">艰 险</button>
+      </div>
+      <div class="diff-tip" id="diff-tip">修仙本艰。成算与凶险皆如常理。</div>
+      <div class="title-form">
+        <input id="input-name" maxlength="8" placeholder="道号（可留空）" autocomplete="off" spellcheck="false">
+        <button id="btn-roll" class="btn btn-primary">卜 一 卦</button>
+      </div>
+      <button id="btn-resume" class="btn btn-ghost" hidden>继 续 前 世</button>
+    </div>
+
+    <div id="roll-panel" class="roll-panel" hidden>
+      <div class="roll-kicker">天 命 三 分</div>
+      <div class="roll-grid" id="roll-grid"></div>
+      <div class="trait-chips" id="trait-chips"></div>
+      <div class="roll-actions">
+        <button id="btn-reroll" class="btn btn-ghost">重 卜</button>
+        <button id="btn-enter" class="btn btn-primary">踏 入 仙 途</button>
+      </div>
+    </div>
+
+    <p class="title-foot">凡人寿百 · 炼气百五 · 筑基二百五 · 结丹五百五 · 元婴千二 · 化神三千<br><b>同人作品 · 致敬忘语《凡人修仙传》</b></p>
+  </div>
+</section>
+
+<!-- ==================== 游戏页 ==================== -->
+<section id="screen-game" class="screen" hidden>
+  <header class="hud">
+    <div class="hud-inner">
+      <div class="hud-realm">
+        <div class="hud-name" id="hud-name">无名</div>
+        <div class="hud-sub" id="hud-sub"></div>
+      </div>
+      <div class="hud-realm">
+        <div class="realm-name" id="hud-realm">凡人</div>
+        <div class="realm-phase" id="hud-phase">红尘</div>
+      </div>
+      <div class="hud-life">
+        <div class="life-row"><span id="hud-age">十六岁</span><span id="hud-lifespan">寿元 84</span></div>
+        <div class="bar life"><i id="hud-life-bar"></i></div>
+      </div>
+      <div class="hud-prog">
+        <div class="prog-row"><span>修为</span><span id="hud-prog-text">0 / 0</span></div>
+        <div class="bar"><i id="hud-prog-bar"></i></div>
+      </div>
+      <div class="hud-vitals">
+        <div class="vital"><span class="vital-label">气血 <span id="hud-hp-text">0/0</span></span><div class="bar hp"><i id="hud-hp-bar"></i></div></div>
+        <div class="vital"><span class="vital-label">法力 <span id="hud-mp-text">0/0</span></span><div class="bar mp"><i id="hud-mp-bar"></i></div></div>
+      </div>
+      <div class="hud-res">
+        <span class="res"><b id="hud-stones">0</b><em>灵石</em></span>
+        <span class="res"><b id="hud-items">0</b><em>杂物</em></span>
+        <span class="res"><b id="hud-mood">60</b><em>心境</em></span>
+      </div>
+      <div class="hud-meta">
+        <span class="meta-tech" id="hud-tech">尚未修习功法</span>
+        <span class="meta-tag"><b>身在</b><em id="hud-place">越国</em></span>
+        <span class="meta-tag"><b>世道</b><em id="hud-era">太平年月</em></span>
+        <span class="meta-tag"><b>纪年</b><em id="hud-year">第 一 年</em></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="world-brief" id="world-brief"></div>
+
+  <main class="stage">
+    <div class="layout">
+      <aside class="side-col">
+        <div class="panel">
+          <div class="panel-title">因 果<span class="pt-extra" id="hud-route-mini"></span></div>
+          <div id="left-attr"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">记 恨 于 你</div>
+          <div id="left-enemies"></div>
+        </div>
+        <div class="panel" id="place-panel">
+          <div id="place-info"></div>
+        </div>
+      </aside>
+
+      <div class="main-col" id="stage-main">
+        <div id="stage-dyn"></div>
+        <div id="scene-result" class="result" hidden>
+          <div class="result-body" id="result-text"></div>
+          <div class="deltas" id="result-deltas"></div>
+          <button class="btn btn-primary next" id="btn-continue">继 续</button>
+        </div>
+        <button class="btn btn-primary next" id="btn-next-year" hidden>又 是 一 年</button>
+      </div>
+
+      <aside class="side-col">
+        <div class="panel">
+          <div class="panel-title">道 途</div>
+          <div id="right-route"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">势 力</div>
+          <div id="right-faction"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">天 下 事</div>
+          <div id="right-news"></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="side-btns">
+    <button class="side-btn" id="btn-bag" title="储物袋">囊</button>
+    <button class="side-btn" id="btn-char" title="人物">人</button>
+    <button class="side-btn" id="btn-npc" title="人脉">缘</button>
+    <button class="side-btn" id="btn-help" title="玩法">?</button>
+    <button class="side-btn" id="btn-shop" title="坊市">市</button>
+    <button class="side-btn" id="btn-world" title="世界">世</button>
+  </div>
+
+  <div id="battle" class="battle" hidden></div>
+</section>
+
+<!-- ==================== 结局页 ==================== -->
+<section id="screen-end" class="screen" hidden>
+  <div class="end-inner" id="end">
+    <div class="end-kicker" id="end-kicker">身 死 道 消</div>
+    <h1 class="end-title" id="end-title">身死</h1>
+    <p class="end-text" id="end-text"></p>
+    <div class="end-route" id="end-route"></div>
+    <div class="end-stats" id="end-stats"></div>
+    <div class="roll-actions">
+      <button class="btn btn-primary" id="btn-again">再 入 轮 回</button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 弹层 ==================== -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-inner">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" id="modal-close">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="util.js"></script>
+<script src="data.js"></script>
+<script src="world.js"></script>
+<script src="player.js"></script>
+<script src="npc.js"></script>
+<script src="eventcore.js"></script>
+<script src="events_explore.js"></script>
+<script src="events_social.js"></script>
+<script src="events_war.js"></script>
+<script src="events_market.js"></script>
+<script src="events_sect.js"></script>
+<script src="events_craft.js"></script>
+<script src="events_fate.js"></script>
+<script src="battle.js"></script>
+<script src="ui.js"></script>
+<script src="game.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
+
+
